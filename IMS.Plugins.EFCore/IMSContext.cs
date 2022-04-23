@@ -25,7 +25,7 @@ namespace IMS.Plugins.EFCore
                 new Inventory { InventoryId = 2, InventoryName = "Body", Price = 400, Quantity = 1 },
                 new Inventory { InventoryId = 3, InventoryName = "Wheel", Price = 100, Quantity = 4 },
                 new Inventory { InventoryId = 4, InventoryName = "Seat", Price = 50, Quantity = 5 }
-                );
+            );
         }
     }
 }
