@@ -10,14 +10,13 @@
 
 @code {
     private string? inventoryNameToSearch;
-    private List<Inventory>? inventories;
 
     [Parameter]
     public EventCallback<List<Inventory>> OnSearchInventories{ get; set; }
 
     private async Task ViewInventories()
     {
-        inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync(inventoryNameToSearch??string.Empty))?.ToList();
+        var inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync(inventoryNameToSearch??string.Empty))?.ToList();
 
         await OnSearchInventories.InvokeAsync(inventories);
     } 
