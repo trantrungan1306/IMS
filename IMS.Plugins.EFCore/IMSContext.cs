@@ -20,6 +20,18 @@ namespace IMS.Plugins.EFCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //build relationships
+            modelBuilder.Entity<ProductInventory>()
+                .HasKey(pi => new { pi.ProductId,pi.InventoryId });
+            modelBuilder.Entity<ProductInventory>()
+                .HasOne(pi => pi.Product)
+                .WithMany(p => p.ProductInventories)
+                .HasForeignKey(pi => pi.ProductId);
+            modelBuilder.Entity<ProductInventory>()
+                .HasOne(pi => pi.Inventory)
+                .WithMany(i => i.ProductInventories)
+                .HasForeignKey(pi => pi.InventoryId);
+
             //seeding data
             modelBuilder.Entity<Inventory>().HasData(
                 new Inventory { InventoryId = 1, InventoryName = "Gas Engine", Price = 1000, Quantity = 1 },
@@ -34,6 +46,14 @@ namespace IMS.Plugins.EFCore
                 new Product { ProductId = 1, ProductName = "Gas Car", Price = 1000, Quantity = 1 },
                 new Product { ProductId = 2, ProductName = "Electric Car", Price = 400, Quantity = 1 }
             );
+
+            modelBuilder.Entity<ProductInventory>().HasData(
+                new ProductInventory { ProductId = 2, InventoryId = 5, InventoryQuantity = 1 },
+                new ProductInventory { ProductId = 2, InventoryId = 2, InventoryQuantity = 1 },
+                new ProductInventory { ProductId = 2, InventoryId = 3, InventoryQuantity = 4 },
+                new ProductInventory { ProductId = 2, InventoryId = 4, InventoryQuantity = 5 },
+                new ProductInventory { ProductId = 2, InventoryId = 6, InventoryQuantity = 1 }
+                );
         }
     }
 }

@@ -1,0 +1,33 @@
+﻿<div class="form-group">
+    <label>Inventorie</label>
+    <ViewInventoriesComponent DisplaySearchResult="true" OnSelectInventory="OnSelectInventory"></ViewInventoriesComponent>
+</div>
+
+@if(Inventories != null && Inventories.Count > 0)
+{
+    <ul style="list-style-type:none">
+        @foreach(var inv in this.Inventories)
+        {
+            <li>@inv.InventoryName &nbsp; <button class="btn btn-link" type="button" @onclick="@(()=>RemoveInventory(inv))">Remove</button></li>
+        }   
+    </ul>
+}
+
+
+@code {
+    public List<Inventory> Inventories = new List<Inventory>();
+
+    private void OnSelectInventory(Inventory inventory)
+    {
+        if(!Inventories.Any(x => x.InventoryName.Equals(inventory.InventoryName,StringComparison.OrdinalIgnoreCase)))
+        {
+            this.Inventories.Add(inventory);
+        }
+    }
+
+    private void RemoveInventory(Inventory inventory)
+    {
+        this.Inventories.Remove(inventory);
+    }
+
+}
