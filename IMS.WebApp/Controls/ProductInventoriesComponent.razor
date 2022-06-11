@@ -3,31 +3,51 @@
     <ViewInventoriesComponent DisplaySearchResult="true" OnSelectInventory="OnSelectInventory"></ViewInventoriesComponent>
 </div>
 
-@if(Inventories != null && Inventories.Count > 0)
+@if(ProductInventories != null && ProductInventories.Count > 0)
 {
-    <ul style="list-style-type:none">
-        @foreach(var inv in this.Inventories)
-        {
-            <li>@inv.InventoryName &nbsp; <button class="btn btn-link" type="button" @onclick="@(()=>RemoveInventory(inv))">Remove</button></li>
-        }   
-    </ul>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var productInventory in this.ProductInventories)
+            {
+                <tr>
+                    <td>
+                        @productInventory.Inventory.InventoryName
+                    </td>
+                    <td>
+                        <input type="number" min="0" max="@productInventory.Inventory.Quantity" @bind-value="productInventory.InventoryQuantity" />
+                    </td>
+                    <td>
+                        <button class="btn btn-link" type="button" @onclick="@(()=>RemoveInventory(productInventory))">Remove</button>
+                    </td>
+                </tr>
+            }
+            
+        </tbody>   
+    </table>
 }
 
 
 @code {
-    public List<Inventory> Inventories = new List<Inventory>();
+    public List<ProductInventory> ProductInventories = new List<ProductInventory>();
 
     private void OnSelectInventory(Inventory inventory)
     {
-        if(!Inventories.Any(x => x.InventoryName.Equals(inventory.InventoryName,StringComparison.OrdinalIgnoreCase)))
+        if(!ProductInventories.Any(x => x.Inventory.InventoryName.Equals(inventory.InventoryName,StringComparison.OrdinalIgnoreCase)))
         {
-            this.Inventories.Add(inventory);
+            this.ProductInventories.Add(new ProductInventory { InventoryId = inventory.InventoryId, Inventory = inventory });
         }
     }
 
-    private void RemoveInventory(Inventory inventory)
+    private void RemoveInventory(ProductInventory productInventory)
     {
-        this.Inventories.Remove(inventory);
+        this.ProductInventories.Remove(productInventory);
     }
 
 }

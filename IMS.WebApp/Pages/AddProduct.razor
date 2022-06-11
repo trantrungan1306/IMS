@@ -47,6 +47,12 @@
     {
         if(this.product != null)
         {
+            this.ProductInventoriesComponent.ProductInventories.ForEach(x =>
+            {
+                x.ProductId = this.product.ProductId;
+            });
+            this.product.ProductInventories = ProductInventoriesComponent.ProductInventories;
+
             await AddProductUseCase.ExecuteAsync(this.product);
             NavigationManager.NavigateTo("/products");
         }
