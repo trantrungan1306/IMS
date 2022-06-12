@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace IMS.UseCases
 {
-    public class ViewProductssByNameUseCase : IViewProductsByNameUseCase
+    public class ViewProductsByNameUseCase : IViewProductsByNameUseCase
     {
         private readonly IProductRepository productRepository;
 
-        public ViewProductssByNameUseCase(IProductRepository productRepository)
+        public ViewProductsByNameUseCase(IProductRepository productRepository)
         {
             this.productRepository = productRepository;
         }
