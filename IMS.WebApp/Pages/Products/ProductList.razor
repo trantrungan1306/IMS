@@ -20,7 +20,7 @@
         <tbody>
             @foreach (var product in this.listProducts)
             {
-                <ProductItemComponent Product="product"></ProductItemComponent>
+                <ProductItemComponent Product="product" OnProductDeleted="OnProductDeleted"></ProductItemComponent>
             }
         </tbody>
     </table>
@@ -46,6 +46,17 @@
     private void AddProduct()
     {
         NavigationManager.NavigateTo("/addproduct");
+    }
+
+    private async Task OnProductDeleted()
+    {
+        await LoadProducts();
+    }
+
+    private async Task LoadProducts()
+    {
+        var prods = await ViewProductsByNameUseCase.ExecuteAsync();
+        this.listProducts = prods.ToList();
     }
 
 }
