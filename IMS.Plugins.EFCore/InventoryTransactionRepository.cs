@@ -24,11 +24,11 @@ namespace IMS.Plugins.EFCore
                 PONumber = poNumber,
                 InventoryId = inventory.InventoryId,
                 QuantityBefore = inventory.Quantity,
-                InventoryType = InventoryTransactionType.PurchaseInventory,
+                ActivityType = InventoryTransactionType.PurchaseInventory,
                 QuantityAfter = inventory.Quantity + quantity,
                 TransctionDate = DateTime.Now,
                 DoneBy = doneBy,
-                Cost = price * quantity
+                UnitPrice = price
 
             });
             await this.db.SaveChangesAsync();
