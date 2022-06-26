@@ -50,6 +50,13 @@ namespace IMS.Plugins.EFCore
             );
 
             modelBuilder.Entity<ProductInventory>().HasData(
+                new ProductInventory { ProductId = 1, InventoryId = 1, InventoryQuantity = 1 },
+                new ProductInventory { ProductId = 1, InventoryId = 2, InventoryQuantity = 1 },
+                new ProductInventory { ProductId = 1, InventoryId = 3, InventoryQuantity = 4 },
+                new ProductInventory { ProductId = 1, InventoryId = 4, InventoryQuantity = 5 }
+                );
+
+            modelBuilder.Entity<ProductInventory>().HasData(
                 new ProductInventory { ProductId = 2, InventoryId = 5, InventoryQuantity = 1 },
                 new ProductInventory { ProductId = 2, InventoryId = 2, InventoryQuantity = 1 },
                 new ProductInventory { ProductId = 2, InventoryId = 3, InventoryQuantity = 4 },

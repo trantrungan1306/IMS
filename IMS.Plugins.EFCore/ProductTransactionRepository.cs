@@ -24,7 +24,7 @@ namespace IMS.Plugins.EFCore
         {
             var prod = await this.productRepository.GetProductByIdAsync(product.ProductId);
 
-            if (prod == null)
+            if (prod != null)
             {
                 foreach (var pi in prod.ProductInventories)
                 {
