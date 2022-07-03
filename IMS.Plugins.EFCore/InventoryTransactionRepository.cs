@@ -1,5 +1,6 @@
 ﻿using IMS.CoreBusiness;
 using IMS.UseCases.PluginInterface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,18 @@ namespace IMS.Plugins.EFCore
         public InventoryTransactionRepository(IMSContext db)
         {
             this.db = db;
+        }
+
+        public async Task<IEnumerable<InventoryTransaction>> GetInventoryTransactionsAsync(string inventoryName, DateTime? dateFrom, DateTime? dateTo, InventoryTransactionType? transactionType)
+        {
+            var query = from it in db.InventoryTransactions
+                        join inv in db.Inventories on it.InventoryId equals inv.InventoryId
+                        where (string.IsNullOrWhiteSpace(inventoryName) && inv.InventoryName.Contains(inventoryName,StringComparison.OrdinalIgnoreCase)) &&
+                        (!dateFrom.HasValue || it.TransctionDate >= dateFrom.Value.Date) &&
+                        (!dateTo.HasValue || it.TransctionDate <= dateTo.Value.Date) &&
+                        (!transactionType.HasValue || it.ActivityType == transactionType)
+                        select it;
+            return await query.Include(x=>x.Inventory).ToListAsync();
         }
 
         public async Task PurchaseAsync(string poNumber, Inventory inventory, int quantity, double price,string doneBy)
