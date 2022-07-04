@@ -11,5 +11,6 @@ namespace IMS.UseCases.PluginInterface
     {
         Task ProduceAsync(string productNumber, Product product, int quantity, double price, string doneBy);
         Task SellProductAsync(string saleOrderNumber, Product product, int quantity, double price, string doneBy);
+        Task<IEnumerable<ProductTransaction>> GetProductTransactionsAsync(string productName, DateTime? dateFrom, DateTime? dateTo, ProductTransactionType? transactionType);
     }
 }
