@@ -23,7 +23,7 @@ namespace IMS.Plugins.EFCore
             if(dateTo.HasValue) dateTo = dateTo.Value.AddDays(1);
             var query = from it in db.InventoryTransactions
                         join inv in db.Inventories on it.InventoryId equals inv.InventoryId
-                        where (string.IsNullOrWhiteSpace(inventoryName) && inv.InventoryName.Contains(inventoryName,StringComparison.OrdinalIgnoreCase)) &&
+                        where (string.IsNullOrWhiteSpace(inventoryName) && inv.InventoryName.ToLower().IndexOf(inventoryName.ToLower()) >= 0) &&
                         (!dateFrom.HasValue || it.TransctionDate >= dateFrom.Value.Date) &&
                         (!dateTo.HasValue || it.TransctionDate <= dateTo.Value.Date) &&
                         (!transactionType.HasValue || it.ActivityType == transactionType)

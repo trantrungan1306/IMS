@@ -1,5 +1,7 @@
 ﻿@page "/purchase"
 
+@attribute [Authorize]
+
 @inject IPurchaseInventoryUseCase PurchaseInventoryUseCase
 
 <h3>Purchase Inventory</h3>

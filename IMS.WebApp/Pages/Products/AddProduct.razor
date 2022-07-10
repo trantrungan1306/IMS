@@ -1,5 +1,7 @@
 ﻿@page "/addproduct"
 
+@attribute [Authorize]
+
 @inject IAddProductUseCase AddProductUseCase
 @inject NavigationManager NavigationManager
 

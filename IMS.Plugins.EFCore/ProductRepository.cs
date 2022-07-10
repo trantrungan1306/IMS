@@ -20,7 +20,9 @@ namespace IMS.Plugins.EFCore
 
         public async Task AddProductAsync(Product product)
         {
-            if (db.Products.Any(x => x.ProductName.Equals(product.ProductName, StringComparison.OrdinalIgnoreCase))) return;
+            //if (db.Products.Any(x => x.ProductName.Equals(product.ProductName, StringComparison.OrdinalIgnoreCase))) return;
+
+            if (db.Products.Any(x => x.ProductName.ToLower() == product.ProductName.ToLower())) return;
 
             db.Products.Add(product);
             await db.SaveChangesAsync();
@@ -45,13 +47,13 @@ namespace IMS.Plugins.EFCore
 
         public async Task<List<Product>> GetProductsByNameAsync(string name)
         {
-            return await this.db.Products.Where(x => (x.ProductName.Contains(name, StringComparison.OrdinalIgnoreCase) || string.IsNullOrWhiteSpace(name)) && x.IsActive == true).ToListAsync();
+            return await this.db.Products.Where(x => (x.ProductName.ToLower().IndexOf(name.ToLower()) >=0 || string.IsNullOrWhiteSpace(name)) && x.IsActive == true).ToListAsync();
         }
 
         public async Task UpdateProductAsync(Product product)
         {
             //prevent same name
-            if(db.Products.Any(x => x.ProductName.Equals(product.ProductName, StringComparison.OrdinalIgnoreCase))) return;
+            if(db.Products.Any(x => x.ProductName.ToLower() == product.ProductName.ToLower())) return;
 
             var prod = await db.Products.FindAsync(product.ProductId);
 

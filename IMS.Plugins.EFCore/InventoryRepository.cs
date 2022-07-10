@@ -14,13 +14,15 @@ namespace IMS.Plugins.EFCore
         }
         public async Task<IEnumerable<Inventory>> GetInventoriesByName(string name)
         {
-            return await this.db.Inventories.Where(x => x.InventoryName.Contains(name, StringComparison.OrdinalIgnoreCase) || string.IsNullOrWhiteSpace(name)).ToListAsync();
+            return await this.db.Inventories.Where(x => x.InventoryName.ToLower().IndexOf(name.ToLower()) >= 0).ToListAsync();
+
+            //return await this.db.Inventories.Where(x => x.InventoryName.Contains(name, StringComparison.OrdinalIgnoreCase) || string.IsNullOrWhiteSpace(name)).ToListAsync();
         }
 
         public async Task AddInventoryAsync(Inventory inventory)
         {
             //prevent different inventories from having the same name
-            if (db.Inventories.Any(x => x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase))) return;
+            if (db.Inventories.Any(x => x.InventoryName.ToLower() == inventory.InventoryName.ToLower())) return;
 
             this.db.Inventories.Add(inventory);
             await this.db.SaveChangesAsync();
@@ -30,8 +32,11 @@ namespace IMS.Plugins.EFCore
         {
 
             //prevent different inventories from having the same name
+            //if (db.Inventories.Any(x => x.InventoryId != inventory.InventoryId &&
+            //                        x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase))) return;
+
             if (db.Inventories.Any(x => x.InventoryId != inventory.InventoryId &&
-                                    x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase))) return;
+                                    x.InventoryName.ToLower() == inventory.InventoryName.ToLower())) return;
 
             var inv = await this.db.Inventories.FindAsync(inventory.InventoryId);
             if(inv != null)
